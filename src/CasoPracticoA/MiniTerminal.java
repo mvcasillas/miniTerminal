@@ -29,21 +29,19 @@ public class MiniTerminal {
         
     }
     
-    public static boolean menu(String comando){
-        switch(comando){
+    public static boolean menu(String comando, MiniFileManager fm){
+        
+        if(!comando.contains(" ")){
+            //Comandos sin espacios:
+            switch(comando){
                 case "pwd": //Muestra el directorio actual
-                    break;
-                case "cd": //Cambia el directorio actual
+                    System.out.println(fm.getPWD());
                     break;
                 case "ls": //Muestra directorios y archivos sin info
+                    fm.printList(false);
                     break;
                 case "ll": //Muestra directorios y archivos con info
-                    break;
-                case "mkdir": //MkDir
-                    break;
-                case "rm": //Borra
-                    break;
-                case "mv": //Mueve o renombra
+                    fm.printList(true);
                     break;
                 case "help": //Imprime ayuda
                     printHelp();
@@ -51,35 +49,47 @@ public class MiniTerminal {
                 case "exit": //Sale
                     return false;
                 default:
-                    System.out.println("No se reconoce el comando");
+                    System.err.println("No se reconoce el comando");
                     break;
             }
+        }else{
+            //Comandos con un argumento:
+            String orden= comando.substring(0, comando.indexOf(" "));
+            String dir= comando.substring(comando.indexOf(" "));
+            
+            
+        }
+ 
+        
+        
         return true;
     }
     
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
-        File fileorigen;
+        File fileorigen= new File("E:\\DAW\\Programacion\\Java\\UD11_Files\\home");
+        MiniFileManager manager;
+        boolean continuar = true;
+              
         do{
-            System.out.println("Introduce una ruta para empezar a trabajar");
-            String rutaorigen=leer.nextLine();
-            fileorigen = new File(rutaorigen);
-            
             try{
-                MiniFileManager manager= new MiniFileManager(fileorigen);
+                manager= new MiniFileManager(fileorigen);
+                String comando;
+                    
+                do{
+                    //Aquí ya empieza el menú
+                    System.out.println("> ");
+                    comando=leer.nextLine();
+                    continuar= menu(comando, manager);
+
+                }while(continuar);
+            
             }catch(FileNotFoundException e){
-                System.out.println("La ruta introducida no es válida");
+                System.err.println("La ruta no es válida");
             }
-            
-        }while (!fileorigen.exists());
+        }while(continuar);
         
-        //Aquí ya empieza el menú
-        String comando;
-        do{
-            System.out.println("Introduce comando:");
-            comando=leer.nextLine();
-            
-        }while(menu(comando));
+        System.out.println("Gracias por usar el miniTerminal");
         
  
     }
