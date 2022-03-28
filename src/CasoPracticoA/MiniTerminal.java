@@ -29,19 +29,33 @@ public class MiniTerminal {
         
     }
     
-    public static boolean menu(String comando, MiniFileManager fm){
+    public static boolean menu(String orden, MiniFileManager fm, String dir, String dir2){
         
-        if(!comando.contains(" ")){
-            //Comandos sin espacios:
-            switch(comando){
+            switch(orden){
                 case "pwd": //Muestra el directorio actual
                     System.out.println(fm.getPWD());
+                    break;
+                case "cd": //Cambiar directorio actual   
                     break;
                 case "ls": //Muestra directorios y archivos sin info
                     fm.printList(false);
                     break;
                 case "ll": //Muestra directorios y archivos con info
                     fm.printList(true);
+                    break;
+                case "mkdir": //MKdir
+                    if(fm.mkdir(dir)){
+                        System.out.println("Directorio creado con éxito.");
+                    }else{
+                        System.out.println("No se ha podido crear el directorio.");
+                    }
+                    break;
+                case "rm": //Borrar archivo
+                    
+                    //OJO CUIDAO QUE ESTE LANZA EXCEPCIÓN
+                    
+                    break;
+                case "mv": //Mover o renombrar archivo
                     break;
                 case "help": //Imprime ayuda
                     printHelp();
@@ -52,18 +66,10 @@ public class MiniTerminal {
                     System.err.println("No se reconoce el comando");
                     break;
             }
-        }else{
-            //Comandos con un argumento:
-            String orden= comando.substring(0, comando.indexOf(" "));
-            String dir= comando.substring(comando.indexOf(" "));
-            
-            
-        }
- 
-        
-        
+
         return true;
     }
+    
     
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
@@ -80,13 +86,27 @@ public class MiniTerminal {
                     //Aquí ya empieza el menú
                     System.out.println("> ");
                     comando=leer.nextLine();
-                    continuar= menu(comando, manager);
-
+                    
+                    if(!comando.contains(" ")){
+                        //Si no hay espacios dir y dir2 se mandan vacíos
+                        continuar= menu(comando, manager, "", "");
+                    }else{
+                        //Si hay espacios separo primero la orden y luego los directorios (revisar para separar el segundo)
+                        //Quizás un regex que reconozca [A-Z]: 
+                        String orden = comando.substring(0, comando.indexOf(" "));
+                        String dir1 = comando.substring(comando.indexOf(" "));
+                        String dir2="";
+                        
+                        continuar= menu(orden, manager, dir1, dir2);
+                    }
+                    
                 }while(continuar);
             
             }catch(FileNotFoundException e){
                 System.err.println("La ruta no es válida");
             }
+            //cUIDADO QUE SI COGE EXCEPCIÓN PROBABLEMENTE REINICIE LA UBICACIÓN, VER SI SE PUEDE MANTENER DE ALGUNA MANERA
+            
         }while(continuar);
         
         System.out.println("Gracias por usar el miniTerminal");
