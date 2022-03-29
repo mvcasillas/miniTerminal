@@ -29,13 +29,19 @@ public class MiniTerminal {
         
     }
     
-    public static boolean menu(String orden, MiniFileManager fm, String dir, String dir2){
+    public static boolean menu(String orden, MiniFileManager fm, String dir1, String dir2){
         
             switch(orden){
                 case "pwd": //Muestra el directorio actual
                     System.out.println(fm.getPWD());
                     break;
-                case "cd": //Cambiar directorio actual   ESTE TAMBIÉN LANZA EXCEPCIÓN
+                case "cd": //Cambiar directorio actual   ESTE LANZA EXCEPCIÓN
+                    try{
+                        fm.changeDir(dir1);
+                        //Si no salta excepción es que es true y que se ha podido hacer así que no necesita if
+                    }catch(FileNotFoundException e){
+                        System.err.println("La ruta introducida no existe");
+                    }
                     break;
                 case "ls": //Muestra directorios y archivos sin info
                     fm.printList(false);
@@ -44,18 +50,25 @@ public class MiniTerminal {
                     fm.printList(true);
                     break;
                 case "mkdir": //MKdir
-                    if(fm.mkdir(dir)){
+                    if(fm.mkdir(dir1)){
                         System.out.println("Directorio creado con éxito.");
                     }else{
                         System.out.println("No se ha podido crear el directorio.");
                     }
                     break;
-                case "rm": //Borrar archivo
-                    
-                    //OJO CUIDAO QUE ESTE LANZA EXCEPCIÓN
-                    
+                case "rm": //Borrar archivo  ESTE LANZA EXCEPCIÓN
+                    try{
+                        fm.remove(dir1);
+                    }catch(FileNotFoundException e){
+                        System.err.println("La ruta introducida no existe");
+                    }
                     break;
                 case "mv": //Mover o renombrar archivo
+                    if(fm.mv(dir1, dir2)){
+                        System.out.println("Operación realizada correctamente");
+                    }else{
+                        System.out.println("No se ha podido realizar la operación.");
+                    }
                     break;
                 case "help": //Imprime ayuda
                     printHelp();
@@ -70,7 +83,7 @@ public class MiniTerminal {
         return true;
     }
     
-    //Me disculpo de antemano a quien tenga que corregir esto 
+    //Me disculpo de antemano con quien tenga que corregir esto 
     //porque de un día para otro lo dejo de entender yo también
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);

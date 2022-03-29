@@ -112,7 +112,7 @@ public class MiniFileManager {
                     if (f.isFile()){
                         f.delete();
                     }else{
-                        System.out.println("Imposible borrar subcarpeta");
+                        System.err.println("Imposible borrar subcarpeta");
                     }
                 }
                 //Y después si todo ha ido  bien, a sí mismo (si no se borra devuelve false)
