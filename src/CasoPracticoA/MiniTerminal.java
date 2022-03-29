@@ -35,7 +35,7 @@ public class MiniTerminal {
                 case "pwd": //Muestra el directorio actual
                     System.out.println(fm.getPWD());
                     break;
-                case "cd": //Cambiar directorio actual   
+                case "cd": //Cambiar directorio actual   ESTE TAMBIÉN LANZA EXCEPCIÓN
                     break;
                 case "ls": //Muestra directorios y archivos sin info
                     fm.printList(false);
@@ -70,7 +70,8 @@ public class MiniTerminal {
         return true;
     }
     
-    
+    //Me disculpo de antemano a quien tenga que corregir esto 
+    //porque de un día para otro lo dejo de entender yo también
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
         File fileorigen= new File("E:\\DAW\\Programacion\\Java\\UD11_Files\\home");
@@ -91,11 +92,46 @@ public class MiniTerminal {
                         //Si no hay espacios dir y dir2 se mandan vacíos
                         continuar= menu(comando, manager, "", "");
                     }else{
-                        //Si hay espacios separo primero la orden y luego los directorios (revisar para separar el segundo)
-                        //Quizás un regex que reconozca [A-Z]: 
+                        //Si hay espacios separo primero la orden y luego los directorios
+                        //La orden sería hasta el primer espacio y lo siguiente los directorios
                         String orden = comando.substring(0, comando.indexOf(" "));
                         String dir1 = comando.substring(comando.indexOf(" "));
-                        String dir2="";
+                        String dir2;
+                        //mv es el único que recibe dos rutas así que si es move hay que separar el dir2 también
+                        if(orden.equals("mv")){  
+                            String[] dirsArray=dir1.split(" ");
+                            
+                            if(dirsArray.length>2){
+                                int indexSegundaRuta=0;
+                                //Empieza a mirar el array desde el 1 para saltarse el inicio de la primera ruta
+                                //Con este for saco la última posición del array que empieza por letra, dos puntos
+                                //Si hay más de una letra, dos puntos la ruta va a estar mal y ya el comando se encarga
+                                //de lanzar el error
+                                for(int i=1;i<dirsArray.length;i++){
+                                    if(dirsArray[i].matches("[A-Z]:")){
+                                        indexSegundaRuta=i;
+                                    }
+                                }
+
+                                dir2=dirsArray[indexSegundaRuta];
+                                //Con este if y for cojo desde el index hasta el final del array y lo meto todo en dir2
+                                //Si luego la ruta no está bien escrita se encarga el comando de lanzar el error
+                                if(indexSegundaRuta!=(dirsArray.length-1)){                                   
+                                    for(int i=indexSegundaRuta+1;i<dirsArray.length;i++)
+                                    dir2=dir2+dirsArray[i];
+                                }
+                                
+                            }else{
+                                //Este sería el caso de que las dos rutas no tuvieran espacios y todo fuera maravilloso
+                                dir1=dirsArray[0];
+                                dir2=dirsArray[1]; 
+                            }  
+                            
+                        }else{
+                            //Si la orden no es mv dir2 debería ir vacío porque solo recibe una ruta
+                            //Si son varias rutas entonces el comando está mal y ya se encarga el file manager de lanzar el error
+                            dir2="";
+                        }   
                         
                         continuar= menu(orden, manager, dir1, dir2);
                     }
@@ -106,6 +142,7 @@ public class MiniTerminal {
                 System.err.println("La ruta no es válida");
             }
             //cUIDADO QUE SI COGE EXCEPCIÓN PROBABLEMENTE REINICIE LA UBICACIÓN, VER SI SE PUEDE MANTENER DE ALGUNA MANERA
+            //Intentar hacer un catch de la excepción antes de que llegue aquí a ver si así
             
         }while(continuar);
         
