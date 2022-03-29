@@ -39,7 +39,7 @@ public class MiniFileManager {
             return true;
         }else{
             nuevaubicacion= new File(dir);
-        
+        //NO PUTO RECONOCE LA RUTA NUEVA NO SÉ POR QUÉ SIEMPRE ENTRA EN EL ELSE
             if (nuevaubicacion.exists()){
                 //Si existe se cambia
                 this.ubicacion.renameTo(nuevaubicacion);
