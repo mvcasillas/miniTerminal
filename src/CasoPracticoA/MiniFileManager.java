@@ -33,16 +33,16 @@ public class MiniFileManager {
     public boolean changeDir(String dir) throws FileNotFoundException{
         //Cambia la carpeta actual a dir, devuelve true si se ha hecho correctamente
         File nuevaubicacion;
-        if("..".equals(dir)){
+        if(dir.equalsIgnoreCase("..")){
             nuevaubicacion= new File(ubicacion.getParentFile().getAbsolutePath());
-            this.ubicacion.renameTo(nuevaubicacion);
+            this.ubicacion=nuevaubicacion;
             return true;
         }else{
             nuevaubicacion= new File(dir);
         //NO PUTO RECONOCE LA RUTA NUEVA NO SÉ POR QUÉ SIEMPRE ENTRA EN EL ELSE
             if (nuevaubicacion.exists()){
                 //Si existe se cambia
-                this.ubicacion.renameTo(nuevaubicacion);
+                this.ubicacion=nuevaubicacion;
                 return true;
             }else{
                 throw new FileNotFoundException("El archivo o la ruta no existe");

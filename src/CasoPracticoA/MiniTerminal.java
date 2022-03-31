@@ -108,7 +108,7 @@ public class MiniTerminal {
                         //Si hay espacios separo primero la orden y luego los directorios
                         //La orden sería hasta el primer espacio y lo siguiente los directorios
                         String orden = comando.substring(0, comando.indexOf(" "));
-                        String dir1 = comando.substring(comando.indexOf(" "));
+                        String dir1 = comando.substring(comando.indexOf(" ")+1);
                         String dir2;
                         //mv es el único que recibe dos rutas así que si es move hay que separar el dir2 también
                         if(orden.equals("mv")){  
