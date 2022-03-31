@@ -7,6 +7,7 @@ package CasoPracticoA;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -39,7 +40,6 @@ public class MiniFileManager {
             return true;
         }else{
             nuevaubicacion= new File(dir);
-        //NO PUTO RECONOCE LA RUTA NUEVA NO SÉ POR QUÉ SIEMPRE ENTRA EN EL ELSE
             if (nuevaubicacion.exists()){
                 //Si existe se cambia
                 this.ubicacion=nuevaubicacion;
@@ -52,46 +52,59 @@ public class MiniFileManager {
     
     public void printList(boolean info) {
         
+        //Separo los files en directorios y ficheros (ambas opciones lo hacen)
+        ArrayList<File> directorios = new ArrayList();
+        ArrayList<File> ficheros = new ArrayList();
+        for (File listFile : ubicacion.listFiles()) {
+            if(listFile.isDirectory()){
+                directorios.add(listFile);
+            }else{
+                ficheros.add(listFile);
+            }
+        }
+        
         if(info){
             //LL
-            System.out.println("Directorios: ");
-                    
-            for (File listFile : ubicacion.getParentFile().listFiles()) {
-                if (listFile.isDirectory()) {
-                    System.out.println("Nombre de directorio : " + listFile.getName());
-                    System.out.println("Tamaño del directorio: "+listFile.length()+" bytes.");
-                    Date fecha= new Date(listFile.lastModified());
+            //Compruebo si hay o no directorios para imprimir o no el encabezado
+            if (directorios.size()>0){
+                System.out.println("Directorios: ");
+                for(File d : directorios){
+                    System.out.println("Nombre de directorio : " + d.getName());
+                    System.out.println("Tamaño del directorio: "+d.length()+" bytes.");
+                    Date fecha= new Date(d.lastModified());
                     System.out.println("Fecha de modificación: "+fecha);
                     System.out.println("---------------------");
                 }
             }
-                
-            System.out.println("\nArchivos:");
-            for (File listFile : ubicacion.getParentFile().listFiles()) {
-                if (listFile.isFile()) {
-                    System.out.println("Nombre de archivo    : " + listFile.getName());
-                    System.out.println("Tamaño del archivo   : "+listFile.length()+" bytes.");
-                    Date fecha= new Date(listFile.lastModified());
+            
+            //Compruebo si hay o no ficheros para imprimir o no el encabezado
+            if (ficheros.size()>0){
+                System.out.println("\nArchivos:");
+                for(File f : ficheros){
+                    System.out.println("Nombre de archivo    : " + f.getName());
+                    System.out.println("Tamaño del archivo   : "+f.length()+" bytes.");
+                    Date fecha= new Date(f.lastModified());
                     System.out.println("Fecha de modificación: "+fecha);
                     System.out.println("---------------------");
-                } 
-            }
-            
-                
+                }
+            }   
+        
         }else{
             //LS
-            System.out.println("\nDirectorios: ");     
-            for (File listFile : ubicacion.getParentFile().listFiles()) {
-                if (listFile.isDirectory()) {
+            //Compruebo si hay o no directorios para imprimir o no el encabezado
+            if (directorios.size()>0){
+                System.out.println("\nDirectorios: ");     
+                for (File listFile : directorios) {
                     System.out.println(listFile.getName());
                 }
             }
             
-            System.out.println("\nArchivos:");
-            for (File listFile : ubicacion.getParentFile().listFiles()) {
-                if (listFile.isFile()) 
+            if (ficheros.size()>0){
+                System.out.println("\nArchivos:");
+                for (File listFile : ficheros) {
                     System.out.println(listFile.getName());
-            } 
+                }
+            }
                     
         }
         
