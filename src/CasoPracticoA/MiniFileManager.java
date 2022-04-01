@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 
 /**
  *
@@ -150,7 +151,8 @@ public class MiniFileManager {
         return f1.renameTo(f2);
     }
     
-    //Método para sumar el tamaño del contenido de un directorio ya que file.length no lo hace de forma recursiva 
+    //Método para sumar el tamaño del contenido de un directorio 
+    //ya que file.length no lo hace de forma recursiva 
     private long getSizeDirectorio(File padre){
         long bytes=0;
         
@@ -168,7 +170,16 @@ public class MiniFileManager {
     }
     
     public boolean info(String dir) throws FileNotFoundException{
-        File elemento = new File(dir);
+        File elemento;
+       
+        //Con este if convierto las rutas relativas en rutas absolutas para que exists() no me la líe
+        if(dir.matches("[A-Z]:.*")){
+            //La ruta es absoluta
+            elemento = new File(dir);
+        }else{
+            //La ruta es relativa
+            elemento = new File(this.ubicacion.getAbsolutePath()+"/"+dir);
+        }
         
         if(elemento.exists()){
             Date fecha= new Date(elemento.lastModified());
@@ -184,8 +195,15 @@ public class MiniFileManager {
                 megas=bytes/1024/1024;
             }   
             
-            System.out.println(elemento.getName()+"      "
-                    +"tamaño "+bytes+" bytes     "+megas+" M         "+fecha);
+            //Uso un formatter para alinear las distintas "columnas" sin importar
+            //la longitud del contenido (nombre, tamaño etc)
+            //Sólo para que quede más bonito :) 
+            //Se nota solo cuando pruebas el comando varias veces y los archivos miden distinto,
+            //Que todo queda bien alineado en columnas
+            Formatter informacion = new Formatter();
+            informacion.format("%-15s %15s %15s %40s", elemento.getName(), bytes+" bytes", megas+"M", fecha);
+
+            System.out.println(informacion);
         }else{
             throw new FileNotFoundException("El archivo o la ruta no existe");
         }

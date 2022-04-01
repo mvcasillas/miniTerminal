@@ -41,7 +41,7 @@ public class MiniTerminal {
                         fm.changeDir(dir1);
                         //Si no salta excepción es que es true y que se ha podido hacer así que no necesita if
                     }catch(FileNotFoundException e){
-                        System.err.println("La ruta introducida no existe");
+                        System.err.println(e.toString());
                     }
                     break;
                 case "ls": //Muestra directorios y archivos sin info
@@ -61,7 +61,7 @@ public class MiniTerminal {
                     try{
                         fm.remove(dir1);
                     }catch(FileNotFoundException e){
-                        System.err.println("La ruta introducida no existe");
+                        System.err.println(e.toString());
                     }
                     break;
                 case "mv": //Mover o renombrar archivo
@@ -74,7 +74,7 @@ public class MiniTerminal {
                 case "help": //Imprime ayuda
                     printHelp();
                     break;
-                case "info":
+                case "info": //Muestra tamaño en bytes y megas y fecha de modificación de un file
                     try{
                         fm.info(dir1);
                     }catch(FileNotFoundException e){
@@ -95,7 +95,7 @@ public class MiniTerminal {
     //porque de un día para otro lo dejo de entender yo también
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
-        File fileorigen= new File("E:\\DAW\\Programacion\\Java\\UD11_Files\\home");
+        File fileorigen= new File("home");
         MiniFileManager manager;
         boolean continuar = true;
               
