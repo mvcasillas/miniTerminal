@@ -18,6 +18,7 @@ public class MiniTerminal {
     public static void printHelp(){
         System.out.println("Comandos disponibles:"
                 + "\npwd           Muestra la carpeta actual"
+                + "\ninfo <file>   Muestra el tamaño y la fecha de modificación del <file>"
                 + "\ncd <dir>      Cambia la carpeta actual a <dir>"
                 + "\nls            Muestra directorios y archivos de la carpeta actual"
                 + "\nll            Muestra directorios, carpetas y su tamaño y fecha de modificación"
@@ -67,11 +68,18 @@ public class MiniTerminal {
                     if(fm.mv(dir1, dir2)){
                         System.out.println("Operación realizada correctamente");
                     }else{
-                        System.out.println("No se ha podido realizar la operación.");
+                        System.err.println("No se ha podido realizar la operación.");
                     }
                     break;
                 case "help": //Imprime ayuda
                     printHelp();
+                    break;
+                case "info":
+                    try{
+                        fm.info(dir1);
+                    }catch(FileNotFoundException e){
+                        System.err.println(e.toString());
+                    }
                     break;
                 case "exit": //Sale
                     return false;
@@ -98,7 +106,8 @@ public class MiniTerminal {
                     
                 do{
                     //Aquí ya empieza el menú
-                    System.out.println("> ");
+                    System.out.println("");
+                    System.out.print("user@machine:~ $ ");
                     comando=leer.nextLine();
                     
                     if(!comando.contains(" ")){

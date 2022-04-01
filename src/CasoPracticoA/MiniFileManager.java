@@ -150,4 +150,47 @@ public class MiniFileManager {
         return f1.renameTo(f2);
     }
     
+    //Método para sumar el tamaño del contenido de un directorio ya que file.length no lo hace de forma recursiva 
+    private long getSizeDirectorio(File padre){
+        long bytes=0;
+        
+        for(File hijo:padre.listFiles()){
+            if(hijo.isFile()){
+                //Si el hijo es un archivo lo sumo al total
+                bytes+=hijo.length();
+            }else{
+                //Si es un directorio llamo a la función recursivamente para sumar su contenido
+                bytes+=getSizeDirectorio(hijo);
+            }  
+        }
+        
+        return bytes;
+    }
+    
+    public boolean info(String dir) throws FileNotFoundException{
+        File elemento = new File(dir);
+        
+        if(elemento.exists()){
+            Date fecha= new Date(elemento.lastModified());
+            long bytes;
+            long megas; 
+            //Si es un archivo se puede sacar el tamaño con .length 
+            //pero si es un directorio hay que cogerlo recursivamente
+            if(elemento.isFile()){
+                bytes=elemento.length();
+                megas= bytes/1024/1024;
+            }else{
+                bytes=getSizeDirectorio(elemento);
+                megas=bytes/1024/1024;
+            }   
+            
+            System.out.println(elemento.getName()+"      "
+                    +"tamaño "+bytes+" bytes     "+megas+" M         "+fecha);
+        }else{
+            throw new FileNotFoundException("El archivo o la ruta no existe");
+        }
+        
+        return true;
+    }
+    
 }
