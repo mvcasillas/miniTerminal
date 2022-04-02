@@ -18,7 +18,12 @@ import java.util.Formatter;
 public class MiniFileManager {
     
     File ubicacion;
-
+    
+    /**
+     * Constructor de filemanager
+     * @param ubicacion - File con la ubicación desde donde se va a operar (pwd)
+     * @throws FileNotFoundException - En el caso de que ubicación no exista
+     */
     public MiniFileManager(File ubicacion) throws FileNotFoundException{
         if(ubicacion.exists()){
             this.ubicacion = ubicacion;
@@ -26,12 +31,22 @@ public class MiniFileManager {
             throw new FileNotFoundException("El archivo o la ruta no existe");
         }   
     }
- 
+    
+    /**
+     * 
+     * @return String con la ruta absoluta en la que el FileManager está operando 
+     */
     public String getPWD(){
         //Devuelve un string con la carpeta actual
         return ubicacion.getAbsolutePath();
     }
     
+    /**
+     * Cambio de directorio actual
+     * @param dir - String con la ruta destino (a dónde se va a cambiar) Puede ser absoluta o relativa
+     * @return true si se ha podido cambiar, si no lanza una excepción (nunca devuelve false)
+     * @throws FileNotFoundException cuando la ruta destino no existe o es incorrecta
+     */
     public boolean changeDir(String dir) throws FileNotFoundException{
         //Cambia la carpeta actual a dir, devuelve true si se ha hecho correctamente
         File nuevaubicacion;
@@ -61,6 +76,10 @@ public class MiniFileManager {
         }   
     }
     
+    /**
+     * Imprime los archivos y directorios de la ubicación actual
+     * @param info - boolean true para mostrar toda la información, false para mostrar solo los nombres
+     */
     public void printList(boolean info) {
         
         //Separo los files en directorios y ficheros (ambas opciones lo hacen)
@@ -121,6 +140,12 @@ public class MiniFileManager {
         
     }
     
+    /**
+     * Borrar un archivo/directorio
+     * @param dir - String con la ruta del archivo/directorio a borrar. Puede ser absoluta o relativa
+     * @return true si se ha podido eliminar correctamente, si no lanza excepción (nunca devuelve false)
+     * @throws FileNotFoundException cuando la ruta destino no existe o es incorrecta
+     */
     public boolean remove(String dir) throws FileNotFoundException{
         File ficheroABorrar;
         
@@ -157,12 +182,23 @@ public class MiniFileManager {
         }
     }
     
+    /**
+     * Crear un directorio en la ruta actual
+     * @param dir - String con el nombre del directorio a crear
+     * @return true si se ha podido crear correctamente, false si no
+     */
     public boolean mkdir(String dir){
         File nuevacarpeta = new File(ubicacion.getAbsolutePath()+"/"+dir);
         //Devuelve true si se ha creado bien
         return nuevacarpeta.mkdir();
     }
     
+    /**
+     * Mover o renombrar dir1 a dir2
+     * @param dir1 - String con la ruta del directorio/fichero origen
+     * @param dir2 - String con la ruta del directorio/fichero destino
+     * @return true si se ha podido mover correctamente, false si no
+     */
     public boolean mv(String dir1, String dir2){
         File f1=new File(dir1);
         File f2=new File(dir2);
@@ -170,8 +206,11 @@ public class MiniFileManager {
         return f1.renameTo(f2);
     }
     
-    //Método para sumar el tamaño del contenido de un directorio 
-    //ya que file.length no lo hace de forma recursiva 
+    /**
+     * Método para sumar el tamaño del contenido de un directorio ya que file.length no lo hace de forma recursiva
+     * @param padre - File de la ruta contenedora (a calcular su contenido)
+     * @return long con el tamaño en bytes de todos sus Files contenidos
+     */
     private long getSizeDirectorio(File padre){
         long bytes=0;
         
@@ -188,6 +227,12 @@ public class MiniFileManager {
         return bytes;
     }
     
+    /**
+     * Mostrar la información (nombre, tamaño en bytes y megas, fecha de última modificación) de un archivo o directorio
+     * @param dir - String con la ruta del File a mostrar la información. Puede ser absoluta o relativa
+     * @return true si el archivo existe y se ha podido mostrar la información. Si no lanza una excepción
+     * @throws FileNotFoundException cuando la ruta destino no existe o es incorrecta
+     */
     public boolean info(String dir) throws FileNotFoundException{
         File elemento;
        

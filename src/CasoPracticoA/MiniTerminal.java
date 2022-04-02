@@ -11,10 +11,13 @@ import java.util.Scanner;
 
 /**
  *
- * @author DAW
+ * @author MariaC
  */
 public class MiniTerminal {
     
+    /**
+     * Imprime por pantalla los comandos disponibles
+     */
     public static void printHelp(){
         System.out.println("Comandos disponibles:"
                 + "\npwd           Muestra la carpeta actual"
@@ -30,6 +33,15 @@ public class MiniTerminal {
         
     }
     
+    /**
+     * Menú funcional del terminal que se pone en contacto con el MiniFileManager
+     * 
+     * @param orden - String con el comando a ejecutar ya separado del resto (si aplica)
+     * @param fm - el objeto MiniFileManager instanciado en el main con el que se realizan las operaciones
+     * @param dir1 - String con el primer directorio (si aplica) para ejecutar el comando
+     * @param dir2 - String con el segundo directorio (si aplica) para ejecutar el comando
+     * @return - true para seguir repitiendo el menú, false para salir y terminar el programa
+     */
     public static boolean menu(String orden, MiniFileManager fm, String dir1, String dir2){
         
             switch(orden){
@@ -93,6 +105,11 @@ public class MiniTerminal {
     
     //Me disculpo de antemano con quien tenga que corregir esto 
     //porque de un día para otro lo dejo de entender yo también
+    
+    /**
+     * Main
+     * @param args 
+     */
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
         //Por defecto el programa se inicia en la carpeta home, donde está el proyecto
@@ -167,6 +184,8 @@ public class MiniTerminal {
                             dir2="";
                         }   
                         
+                        //Llama al menú con los parámetros separados y lo guarda en una variable 
+                        //Se guarda la variable y no se llama en el while para poder consultarla en el bucle siguiente
                         continuar= menu(orden, manager, dir1, dir2);
                     }
                     
@@ -180,7 +199,7 @@ public class MiniTerminal {
         }while(continuar);
         
         System.out.println("Gracias por usar el miniTerminal");
-        
+        //Fin del programa.
  
     }
     
