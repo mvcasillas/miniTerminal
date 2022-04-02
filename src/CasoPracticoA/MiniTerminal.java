@@ -143,8 +143,7 @@ public class MiniTerminal {
                                 for(int i=1;i<indexSegundaRuta;i++){
                                     dir1=dir1+" "+dirsArray[i];
                                     //+" " (más espacio antes de dirsArray[i] porque el split lo ha quitado así que hay que devolverlo
-                                } 
-                                
+                                }                               
                                 
                                 dir2=dirsArray[indexSegundaRuta];
                                 //Con este if y for cojo desde el index hasta el final del array y lo meto todo en dir2

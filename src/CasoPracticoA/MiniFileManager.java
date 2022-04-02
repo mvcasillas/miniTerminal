@@ -122,7 +122,16 @@ public class MiniFileManager {
     }
     
     public boolean remove(String dir) throws FileNotFoundException{
-        File ficheroABorrar = new File(dir);
+        File ficheroABorrar;
+        
+        //Este if/else para poder recibir tanto rutas relativas como absolutas
+        if(dir.matches("[A-Z]:.*")){
+            //La ruta es absoluta
+            ficheroABorrar = new File(dir);
+        }else{
+            //La ruta es relativa
+            ficheroABorrar = new File(this.ubicacion.getAbsolutePath()+"/"+dir);
+        }        
         
         if (ficheroABorrar.exists()){  
             if (ficheroABorrar.isFile()){
@@ -211,7 +220,7 @@ public class MiniFileManager {
             //Se nota solo cuando pruebas el comando varias veces y los archivos miden distinto,
             //Que todo queda bien alineado en columnas
             Formatter informacion = new Formatter();
-            informacion.format("%-20s %15s %30s %-10s", elemento.getName(), bytes+" bytes", megas+" M", fecha);
+            informacion.format("%-20s %15s %10s %5s %-10s", elemento.getName(), bytes+" bytes", megas+" M", "" ,fecha);
 
             System.out.println(informacion);
         }else{
