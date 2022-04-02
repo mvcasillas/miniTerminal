@@ -54,7 +54,7 @@ public class MiniTerminal {
                     if(fm.mkdir(dir1)){
                         System.out.println("Directorio creado con éxito.");
                     }else{
-                        System.out.println("No se ha podido crear el directorio.");
+                        System.err.println("No se ha podido crear el directorio.");
                     }
                     break;
                 case "rm": //Borrar archivo  ESTE LANZA EXCEPCIÓN
@@ -122,6 +122,7 @@ public class MiniTerminal {
                         String dir1 = comando.substring(comando.indexOf(" ")+1);
                         String dir2;
                         //mv es el único que recibe dos rutas así que si es move hay que separar el dir2 también
+                        //Sólo va a funcionar con rutas absolutas porque toma [A-Z]: como el inicio de la segunda ruta
                         if(orden.equals("mv")){  
                             String[] dirsArray=dir1.split(" ");
                             
@@ -132,17 +133,27 @@ public class MiniTerminal {
                                 //Si hay más de una letra, dos puntos la ruta va a estar mal y ya el comando se encarga
                                 //de lanzar el error
                                 for(int i=1;i<dirsArray.length;i++){
-                                    if(dirsArray[i].matches("[A-Z]:")){
+                                    if(dirsArray[i].matches("[A-Z]:.*")){
                                         indexSegundaRuta=i;
                                     }
                                 }
-
+                                
+                                //Dejamos en dir1 solo la primera ruta con sus espacios y todo
+                                dir1=dirsArray[0];
+                                for(int i=1;i<indexSegundaRuta;i++){
+                                    dir1=dir1+" "+dirsArray[i];
+                                    //+" " (más espacio antes de dirsArray[i] porque el split lo ha quitado así que hay que devolverlo
+                                } 
+                                
+                                
                                 dir2=dirsArray[indexSegundaRuta];
                                 //Con este if y for cojo desde el index hasta el final del array y lo meto todo en dir2
                                 //Si luego la ruta no está bien escrita se encarga el comando de lanzar el error
                                 if(indexSegundaRuta!=(dirsArray.length-1)){                                   
-                                    for(int i=indexSegundaRuta+1;i<dirsArray.length;i++)
-                                    dir2=dir2+dirsArray[i];
+                                    for(int i=indexSegundaRuta+1;i<dirsArray.length;i++){
+                                        dir2=dir2+" "+dirsArray[i];
+                                        //+" " (más espacio antes de dirsArray[i] porque el split lo ha quitado así que hay que devolverlo
+                                    }    
                                 }
                                 
                             }else{
@@ -165,8 +176,7 @@ public class MiniTerminal {
             }catch(FileNotFoundException e){
                 System.err.println("La ruta no es válida");
             }
-            //cUIDADO QUE SI COGE EXCEPCIÓN PROBABLEMENTE REINICIE LA UBICACIÓN, VER SI SE PUEDE MANTENER DE ALGUNA MANERA
-            //Intentar hacer un catch de la excepción antes de que llegue aquí a ver si así
+
             
         }while(continuar);
         
