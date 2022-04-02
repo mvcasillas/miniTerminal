@@ -95,6 +95,7 @@ public class MiniTerminal {
     //porque de un día para otro lo dejo de entender yo también
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
+        //Por defecto el programa se inicia en la carpeta home, donde está el proyecto
         File fileorigen= new File("home");
         MiniFileManager manager;
         boolean continuar = true;
@@ -105,11 +106,12 @@ public class MiniTerminal {
                 String comando;
                     
                 do{
-                    //Aquí ya empieza el menú
+                    //Bucle del menú
                     System.out.println("");
                     System.out.print("user@machine:~ $ ");
                     comando=leer.nextLine();
                     
+                    //If/else para separar la línea de comando leída en orden y directorios (si aplica)
                     if(!comando.contains(" ")){
                         //Si no hay espacios dir y dir2 se mandan vacíos
                         continuar= menu(comando, manager, "", "");
