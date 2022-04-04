@@ -65,8 +65,9 @@ public class MiniFileManager {
                 //La ruta es relativa
                 nuevaubicacion = new File(this.ubicacion.getAbsolutePath()+"/"+dir);
             }
-
-            if (nuevaubicacion.exists()){
+            
+            //Para poder cambiar a otra ruta tiene que existir y ser un directorio
+            if (nuevaubicacion.exists() && nuevaubicacion.isDirectory()){
                 //Si existe se cambia
                 this.ubicacion=nuevaubicacion;
                 return true;
