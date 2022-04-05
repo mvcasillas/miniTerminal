@@ -174,16 +174,15 @@ public class MiniTerminal {
                                 }
                                 
                             }else{
-                                //Este sería el caso de que las dos rutas no tuvieran espacios y todo fuera maravilloso
+                                //Este sería el caso de que las dos rutas fueran absolutas, no tuvieran espacios y todo fuera maravilloso
                                 dir1=dirsArray[0];
                                 dir2=dirsArray[1]; 
                             }  
                           }else{
-                              //Esto convierte en ruta absoluta los strings dir1 y dir2 si la primera es relativa y existe
+                              //Esto convierte en ruta absoluta los strings dir1 y dir2 si la primera es relativa y existe y el array es de dimensión 2
                               dir1=manager.getPWD()+"/"+dirsArray[0];
                               dir2=manager.getPWD()+"/"+dirsArray[1];
-                          }
-                          
+                          }                          
                             
                         }else{
                             //Si la orden no es mv dir2 debería ir vacío porque solo recibe una ruta
