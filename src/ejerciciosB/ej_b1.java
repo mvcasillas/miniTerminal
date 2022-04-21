@@ -38,6 +38,8 @@ public class ej_b1 {
             
         }catch (Exception e){
             System.err.println("Errorsito");
+        }finally{
+            //No me está dejando poner el close aquí, ver por qué
         }
         
     }
