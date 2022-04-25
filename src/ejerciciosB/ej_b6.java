@@ -39,17 +39,17 @@ public class ej_b6 {
         try{
             BufferedReader bReader = new BufferedReader(new FileReader("\\home\\Docs\\pi-million.txt"));
             
-            while(el lector tenga algo){
-                //Comparar el caracter con el primer caracter de la cifra introducida
-                int leido= bReader.read();
-                if(cifras[0]==leido){
-                    for(int i=0; i<cifras.length;i++){
-                           
-                    }
-                    
-                } //Y si no matchea sigue hasta que encuentre el primero
-                
-            }
+//            while(el lector tenga algo){
+//                //Comparar el caracter con el primer caracter de la cifra introducida
+//                int leido= bReader.read();
+//                if(cifras[0]==leido){
+//                    for(int i=0; i<cifras.length;i++){
+//                           
+//                    }
+//                    
+//                } //Y si no matchea sigue hasta que encuentre el primero
+//                
+//            }
             
             
             bReader.close();

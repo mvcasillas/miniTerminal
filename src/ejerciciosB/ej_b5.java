@@ -43,9 +43,16 @@ public class ej_b5 {
                     if(palabra.substring(0,1).equalsIgnoreCase(letra)){
                         writerAbc.write(palabra+"\n");
                         //System.out.println("bien");
+                    }else if(palabra.substring(0,1).equals("-")){
+                        //Si comienza con guión compruebo el siguiente caracter al del guión
+                        if(palabra.substring(1,2).equalsIgnoreCase(letra)){
+                            writerAbc.write(palabra+"\n");
+                        }
                     }else{
+                        //else if para ver las que tienen acentos que es lo que faltaría
                         //System.out.println("cagaste");
                     }
+                    
                 }
                 
                 writerAbc.close();

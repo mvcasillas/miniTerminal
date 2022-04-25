@@ -52,8 +52,7 @@ public class ej_b3 {
             
             for(String s:personas){
                 //System.out.println(s.toString());
-                escritor.write(s.toString());
-                escritor.write("\n");
+                escritor.write(s+"\n");
             }    
             
             lector.close();
