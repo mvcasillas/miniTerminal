@@ -8,13 +8,13 @@ package ejerciciosB;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -24,14 +24,37 @@ import java.util.Scanner;
  */
 public class ej_b7 {
     
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm){
+        // Crear una lista de mapentries con los elementos del hm
+        List<Map.Entry<String, Integer> > lista = new LinkedList<>(hm.entrySet());
+ 
+        // Ordenar la lista
+        Collections.sort(lista, new Comparator<Map.Entry<String, Integer> >() {
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2){
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+         
+        // Meter en un hm nuevo los valores de la lista en orden
+        HashMap<String, Integer> ordenado = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> aa : lista) {
+            ordenado.put(aa.getKey(), aa.getValue());
+        }
+        return ordenado;
+        
+        // Sacado y modificado de: https://www.geeksforgeeks.org/sorting-a-hashmap-according-to-values/
+
+    }
+    
+    
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         File aLeer;
 
         do{
             System.out.println("Introduce el archivo a leer");
-            //String rutaLeer = teclado.nextLine();
-            String rutaLeer = "home\\Docs\\Mis cosas\\Lecturas\\pruebita.txt";      
+            String rutaLeer = teclado.nextLine();
+            //String rutaLeer = "home\\Docs\\Mis cosas\\Lecturas\\lazarillo.txt";      
             aLeer = new File(rutaLeer);
         
             if(!aLeer.exists()){
@@ -50,7 +73,7 @@ public class ej_b7 {
                 lectorlineas.nextLine();
                 lineas++;
             }
-            System.out.println("lineas: "+lineas);
+            System.out.println("Líneas: "+lineas);
             lectorlineas.close();
             
             //Cuántas palabras---------------------------------------------------------------
@@ -59,7 +82,7 @@ public class ej_b7 {
                 lectorpalabras.next();
                 palabras++;
             }
-            System.out.println("palabras: "+palabras);
+            System.out.println("Palabras: "+palabras);
             lectorpalabras.close();
             
             //Número de caracteres----------------------------------------------------------
@@ -70,7 +93,7 @@ public class ej_b7 {
                 caracteres++;
             }
             caracteres=caracteres-((lineas-1)*2);
-            System.out.println("caracteres: "+caracteres);
+            System.out.println("Caracteres: "+caracteres);
             lectorcaracteres.close();
             
             
@@ -78,7 +101,8 @@ public class ej_b7 {
             Scanner lectorcomunes = new Scanner(aLeer);
             HashMap<String, Integer> listapalabras = new HashMap<>();
             while(lectorcomunes.hasNext()){
-                String leido=lectorcomunes.next();
+                String leido=lectorcomunes.next().toLowerCase();
+                //tolowercase para que considere las que empiezan por mayus y las que no como la misma palabra
                 
                 //Si no está en el map todavía, se mete
                 if(!listapalabras.containsKey(leido)){
@@ -90,16 +114,18 @@ public class ej_b7 {
                 
             }
             //Ahora quedaría ordenar el map por valores descendente
-            List<Entry<String, Integer>> list = new LinkedList<Entry<String,Integer>>(listapalabras.entrySet());
-            list.sort(new Comparator<Entry<String, Integer>>(){
-                public int compare(int valor1, int valor2){
-                    if(valor1>0)return -1;
-                    if (valor1<0)return 1;
-                    return 0;
-                }
-                
-            });
+            //llama una función que tengo declarada arriba
+            HashMap<String, Integer> ordenado = sortByValue(listapalabras);
+            int contador=0;
             
+            System.out.println("Palabras más usadas: ");
+            for (Map.Entry<String, Integer> en : ordenado.entrySet()) {
+                System.out.println("* " + en.getKey() +" (" + en.getValue()+" veces)");
+                contador++;
+                if (contador>=10){
+                    break;
+                }
+            }
             
             lectorcomunes.close();
            
